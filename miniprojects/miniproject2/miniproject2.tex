@@ -1,0 +1,118 @@
+\newif\ifshowsolutions
+\showsolutionstrue
+\input{preamble}
+
+
+\chead{
+  {\vbox{
+      \vspace{2mm}
+      \large
+      Machine Learning \& Data Mining \hfill
+      Caltech CS/CNS/EE 155 \hfill \\[1pt]
+      Miniproject 2: MovieLens Visualization \hfill
+      Released February $16^{\text{st}}$, 2022 \\
+    }
+  }
+}
+
+\begin{document}
+\pagestyle{fancy}
+
+\section{Overview}
+\begin{itemize}
+	\item In this project, you will be creating visualizations of the MovieLens data set using matrix factorization.
+	\item Each team must post at least one interesting visualization and a brief discussion of it on Piazza by \textbf{9pm on Wednesday, February $23^{\text{th}}$}. Report due at 9pm on Thursday, February $24^{\text{th}}$, via Gradescope.   
+	\item Submit your report as a single .pdf file to Gradescope (entry code 7426YK), under "MiniProject 2: Visualization". There is no fixed formatting for this report. Once again, please submit your report in groups rather than submitting it once per student.
+	 \item Submit your code by \textbf{sharing a link in your report} to your Google Colab notebook for each problem. Make sure to set sharing permissions to at least "Anyone with the link can view". \textbf{Links that can not be run by TAs will not be counted as turned in.} Check your links in an incognito window before submitting to be sure.
+    \item Be sure to appropriately title all visualizations wherever they appear so that it is clear which question each visualization corresponds to.
+    \item When accessing the MovieLens data from your colab notebook, please do so via a link from the raw github data in the course github.
+	\item You should work in a group of size 2 to 4. We encourage you to use the Search for Teammates feature on Piazza to help you find teammates. You may keep the same group as in the previous miniproject.
+	\item You may collaborate fully within your team, but not collaboration is allowed between teams.
+\end{itemize}
+
+\section{Background}
+In late 2006, Netflix challenged the world to create a recommender system that could predict whether a user would like a given movie based on his/her previous ratings on other movies. Netflix created their own recommender system, Cinematch, and hoped that the world could beat their performance by over 10\% (in terms of how closely predicted ratings match subsequent actual ratings). The challenge ended in September 2009, when team "BellKor's Pragmatic Chaos" surpassed the 10\% mark. \\
+
+In this miniproject, we will focus on creating visualizations of this data, rather than predicting user ratings on movies. In order to reduce the computational time needed to produce these visualizations, we will be working with the smaller MovieLens Dataset rather than the full Netflix Prize Dataset. We will start with some basic visualizations and then move on to more complicated ones.
+
+\section{Data Format}
+The MovieLens data set consists of 100,000 ratings from 943 users on 1682 movies, where each user has rated at least 20 movies. More information about the files can be found below:
+
+\begin{itemize}
+	\item \textbf{movies.csv}: Each of the 1682 lines in this file contains a comma-delimited list of the following fields for a movie:
+		\begin{center}
+		\textit{Movie ID, Movie Title, Unknown, Action, Adventure, Animation, Children’s, Comedy, Crime, Documentary, Drama, Fantasy, Film-Noir, Horror, Musical, Mystery, Romance, Sci-Fi, Thriller, War, Western}
+		\end{center}
+The last 19 fields are various movie genres. Here, a 1 indicates the movie is of the given genre, while a 0 indicates that it is not. Note that movies can be in several genres at once. The movie ids correspond to the movie ids specified in the \textbf{data.csv} file and range from $1$ to $1682$.
+	\item \textbf{data.csv}: Each of the 100,000 lines in this file consists of a comma-delimited list of the following fields for a given rating instance:
+		\begin{center}
+		\textit{User ID, Movie ID, Rating}
+		\end{center}
+Here, all ratings are integer values ranging from $1$ to $5$. User ids range from $1$ to $943$ and movie ids range from $1$ to $1682$, as in the previous file.
+\end{itemize}
+
+\section{Report Guidelines}
+
+\subsection{Introduction [5 points]}
+Include an introduction page that contains your team name, a list of all team member names, the work division, and the packages used for this project.
+
+\subsection{Basic Visualizations [20 points]}
+First, you will create some basic visualizations of the MovieLens dataset described above. Using a method (e.g. histograms) of your choice, visualize the following:
+
+\begin{enumerate}
+	\item All ratings in the MovieLens Dataset.
+	\item All ratings of the ten most popular movies (movies which have received the most ratings).
+	\item All ratings of the ten best movies (movies with the highest average ratings).
+	\item All ratings of movies from three genres of your choice (create three separate visualizations).
+\end{enumerate}
+
+Note that in Parts 2 and 3 you only need to make one combined histogram for the ten most popular movies and one combined histogram for the ten best movies.
+
+
+The Python packages \href{http://matplotlib.org/} {Matplotlib} and \href{http://seaborn.pydata.org/} {Seaborn} are good choices for these visualizations, but there are also many other good visualization packages.
+
+\subsubsection{Report Deliverable}
+Your report should contain a section dedicated to basic visualizations. What, in general, did you observe? Did the results match what you would expect to see? How do the ratings from the most popular movies compare to the ratings of the best movies? How do the ratings of the three genres you chose compare to one another?
+
+\subsection{Matrix Factorization Visualizations [60 points]}
+Let \textit{m, n} be the number of users and movies, respectively, and \textit{Y} be the \textit{m x n} matrix of the movie ratings, where $y_{ij}$ corresponds to user \textit{i'}s rating for the movie \textit{j}. Note that most of the elements of the matrix are unknown. The goal of a recommender system is to predict these missing values.
+
+Your job is to find the matrices \textit{U} and \textit{V}, such that ${Y}\simeq{U^TV}$. Note that $U$ has dimension $k \times m$ and $V$ has dimension $k \times n$. You must try the following three methods for finding \textit{U} and \textit{V}.
+
+\begin{enumerate}
+	\item Use (and/or modify) your code or the solution code for Homework 5.
+	\item Incorporate bias terms \textit{a} and \textit{b} for each user and movie, to model global tendencies of the various users and movies. See the guide for more information.
+	\item Use an off-the-shelf implementation\footnote{One off-the-shelf method we suggest is Surprise SVD, found at \url{http://surpriselib.com/}.}. You can Google "collaborative filtering python,"  etc. to see examples. Note that in this assignment, we want you to try an off-the-shelf matrix factorization method, rather than any collaborative filtering method in general.
+\end{enumerate}
+
+For the first two methods, choose \textit{k = 20}, and justify your choices for any other parameters and the stopping criteria you use. For all of these methods, split the MovieLens dataset into a training set (of size 90,000) and a test set (of size 10,000), as given in the files \textbf{train.csv} and \textbf{test.csv}. You should then compare these methods by assessing their performance on the test set. Once you have obtained $U,V$, you will attempt to visualize and interpret your results.
+
+\begin{enumerate}
+	\item In order to visualize the resulting latent factors, apply SVD to $V = A \Sigma B$ and use the first two columns of $A$ to project \textit{U, V} into a two-dimensional space. This projection is given by $\tilde{U} = A_{1:2}^TU \in \mathbb{R}^{2 \times m}$ and $\tilde{V} = A_{1:2}^TV \in \mathbb{R}^{2 \times n}$.
+	\item Now, construct creative 2D-visualizations of $\tilde{V}$, similar to the one in Figure 2 of the reference [1]. Visualize the following:		\begin{enumerate}
+		\item Any ten movies of your choice from the MovieLens dataset.
+		\item The ten most popular movies (movies which have received the most ratings).
+		\item The ten best movies (movies with the highest average ratings).
+		\item Ten movies from the three genres you selected in Section 4, Basic Visualizations (for a total of 30 movies). Create one visualization, containing ten movies, for each of the three genres you select.
+	\end{enumerate}
+\end{enumerate}
+
+You should include 6 graphs for each of the 3 different types of SVD that you implemented, for a total of 18 graphs.
+
+
+\subsubsection{Report Deliverable}
+Your report should contain a section dedicated to matrix factorization methods. How do each of these methods work? Please be specific and include equations. How do they differ? How did they perform in comparison to one another on the test set? Can these methods' differences explain why they perform differently on the test set?
+
+Your report should also contain a section dedicated to matrix factorization visualizations. What, in general, did you observe? Did the results match what you would expect to see? How does the visualization of the most popular movies compare to the visualization of the best movies? How do the visualizations of the three genres you chose compare to one another? How do the visualizations produced by the different matrix factorization methods compare to one another? Be sure to include some plots to indicate which phenomena you’re referring to with respect to your observations.
+
+\subsection{Piazza Post [15 points]}
+In addition to submitting the project on Gradescope, one group member of each team should make a post on Piazza at the aforementioned date and time of at least one interesting visualization the team created. The post should be made in the project2 folder with the title "[Team Name]: Visualization Submission," and the first line of the post should be "Submitted by: [Team Members]." The post should contain at least one visualization created using matrix factorization and a brief description (1 paragraph should suffice) of what makes the visualization so interesting. We will put a sample post on Piazza for reference.
+
+
+\section*{References}
+\begin{enumerate}
+	\item Koren, Y., Bell, R.,\&  Volinsky, C. (2009). \href{https://datajobs.com/data-science-repo/Recommender-Systems-\%5BNetflix\%5D.pdf}{Matrix Factorization Techniques for Recommender Systems} Computer, (8), 30-37.
+	\item Herlocker, J. L., Konstan, J. A., Borchers, A., \& Riedl, J. (1999, August). An algorithmic framework for performing collaborative filtering. In Proceedings of the 22nd annual international ACM SIGIR conference on Research and development in information retrieval (pp. 230-237). ACM.
+\end{enumerate}
+
+\end{document}
