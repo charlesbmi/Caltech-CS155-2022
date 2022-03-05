@@ -23,7 +23,7 @@
 
 \item When accessing the Shakespeare text data from your Colab notebook, please do so via a link from the raw github data in the course github.
 
-\item You can work in groups of size either 3 or 4.  You may keep the same group as in miniproject 1 or 2.
+\item You can work in groups of size 2-4.  You may keep the same group as in miniproject 1 or 2.
 
 \item You may use any language you want, but you must submit a report including documented code that lays out everything you did. We recommend Python for this assignment.
 
@@ -61,7 +61,7 @@ The goal for this project is to generate poems that Shakespeare may have written
 
 \section{Pre-processing (15 points)}
 
-The first step is to pre-process the dataset before you train on it. How you pre-process is completely up to you. Here are a couple of questions to help you decide how to do pre-processing: How will you tokenize the data set? What will consist of a singular sequence, a poem, a stanza, or a line? Do you keep some words tokenized as bigrams? Do you split hyphenated words? How will you handle punctuation? It may be helpful to get syllable counts and syllable stress information from CMU's Pronouncing Dictionary available on \href{http://www.nltk.org/_modules/nltk/corpus/reader/cmudict.html}{NLTK}. You might also find the file \texttt{Syllable\_dictionary.txt}, provided in the data folder, to be helpful; please see the associated file called ``syllable\_dict\_explanation'' for an explanation.
+The first step is to pre-process the dataset before you train on it. How you pre-process is completely up to you. Here are a couple of questions to help you decide how to do pre-processing: How will you tokenize the data set? What will consist of a singular sequence, a poem, a stanza, or a line? Do you keep some words tokenized as bigrams? Do you split hyphenated words? How will you handle punctuation? It may be helpful to get syllable counts and syllable stress information from CMU's Pronouncing Dictionary available on \href{https://www.nltk.org/api/nltk.corpus.reader.cmudict.html}{NLTK}. You might also find the file \texttt{Syllable\_dictionary.txt}, provided in the data folder, to be helpful; please see the associated file called ``syllable\_dict\_explanation'' for an explanation.
 
 \begin{report}
 
@@ -74,9 +74,7 @@ The first step is to pre-process the dataset before you train on it. How you pre
 
 Now your task is to create a HMM for poem generation. \textbf{NOTE:} You do not have to implement this yourself.
 
-Your best option is to use the Baum-Welch algorithm that you implemented in HW6 or from the HW6 solutions. You can also try using the package hmmlearn (\href{https://hmmlearn.readthedocs.io/en/latest/}{documentation here}), which can be installed with \textbf{!pip install hmmlearn}, or the package pomegranate  (\href{https://pomegranate.readthedocs.io/en/latest/HiddenMarkovModel.html}{documentation here}), which can be installed with \textbf{from pomegranate import *}. You can also use any other package you like, but be warned that HMM packages for python tend to be poorly documented, so your safest bet is to use the HW6 solutions.
-
-When training, you should try training models with varying number of hidden states to see what works best.
+Your best option is to use the Baum-Welch algorithm that you implemented in HW6 or from the HW6 solutions. You can alternatively use packages like hmmlearn (\href{https://hmmlearn.readthedocs.io/en/latest/}{documentation here}), which can be installed with \textbf{!pip install hmmlearn}, or pomegranate  (\href{https://pomegranate.readthedocs.io/en/latest/HiddenMarkovModel.html}{documentation here}), which can be installed with \textbf{!pip install pomegranate} (more installation instructions \href{https://pomegranate.readthedocs.io/en/latest/install.html}{here}). You can also use any other package you like but be warned that HMM packages for python tend to be poorly documented, so your safest bet is to use the HW6 solutions. When training, you should try training models with varying number of hidden states to see what works best.
 
 \begin{report}
 
